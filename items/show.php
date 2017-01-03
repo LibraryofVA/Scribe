@@ -66,4 +66,24 @@ $collection = get_collection_for_item();
             </ul>
         </div>
     </div>
+    <?php if (metadata('item', array('Dublin Core', 'Description'))): ?>
+      <p class="dublin_field_title">Description</p>
+      <p class="dublin_field_detail"><?php echo metadata('item', array('Dublin Core', 'Description')); ?></p>
+    <?php endif; ?>
+    <?php if (metadata('item', array('Dublin Core', 'Date'))): ?>
+      <p class="dublin_field_title">Date</p>
+      <p class="dublin_field_detail"><?php echo metadata('item', array('Dublin Core', 'Date')); ?></p>
+    <?php endif; ?>
+    <?php if (metadata('item', array('Dublin Core', 'Abstract'))): ?>
+      <p class="dublin_field_title">Abstract</p>
+      <p class="dublin_field_detail"><?php echo metadata('item', array('Dublin Core', 'Abstract')); ?></p>
+    <?php endif; ?>
+    <?php if (metadata('item', array('Dublin Core', 'Bibliographic Citation'))): ?>
+      <p class="dublin_field_title">Bibliographic Citation</p>
+      <p class="dublin_field_detail"><?php echo metadata('item', array('Dublin Core', 'Bibliographic Citation')); ?></p>
+    <?php endif; ?>
+    <?php if (metadata('item', array('Dublin Core', 'Provenance'))): ?>
+      <p class="dublin_field_title">Provenance</p>
+      <p class="dublin_field_detail"><?php echo metadata('item', array('Dublin Core', 'Provenance')); ?></p>
+    <?php endif; ?>
 <?php echo foot(); ?>

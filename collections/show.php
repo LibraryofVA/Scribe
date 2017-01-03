@@ -12,7 +12,7 @@ if ($collectionTitle == '') {
     <div id="description" class="element">
         <div class="element-text"><?php echo metadata('collection', array('Dublin Core', 'Description')); ?></div>
     </div><!-- end description -->
-
+	<br />
     <div id="collection-items span12">
 
         <ul class="thumbnails">
@@ -20,7 +20,7 @@ if ($collectionTitle == '') {
         $collection_items = get_records('Item',
             array(
                 'collection' => $collection['id'],
-                'sort_field' => 'Scripto,Weight',
+                'sort_field' => 'Dublin Core,Audience',
                 'sort_dir' => 'a',
             ),
             999);
@@ -45,6 +45,11 @@ if ($collectionTitle == '') {
                                 $progress_status = $progress_needs_review + $progress_percent_completed;
 
                                 // Set status messages.
+                                if ($progress_status == null) {
+                                    $progress_status = 0;
+                                }
+                                $progress_not_started = 100 - $progress_status;
+
                                 if ($progress_percent_completed == 100) {
                                     $status_message = __('Completed');
                                 } elseif ($progress_status == 100) {

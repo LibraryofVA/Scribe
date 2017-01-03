@@ -16,7 +16,7 @@ jQuery(document).ready(function() {
     jQuery('#scripto-transcription-page-edit').click(function() {
         jQuery('#scripto-transcription-page-edit').
             prop('disabled', true).
-            text('<?php echo __('Editing transcription...'); ?>');
+            text('<?php echo __('Saving transcription...'); ?>');
         jQuery.post(
             <?php echo js_escape(url('scripto/index/page-action')); ?>,
             {
@@ -29,7 +29,7 @@ jQuery(document).ready(function() {
             function(data) {
                 jQuery('#scripto-transcription-page-edit').
                     prop('disabled', false).
-                    text('<?php echo __('Edit transcription'); ?>');
+                    text('<?php echo __('Save transcription'); ?>');
                 jQuery('#scripto-transcription-page-html').html(data);
             }
         );
@@ -39,7 +39,7 @@ jQuery(document).ready(function() {
     jQuery('#scripto-talk-page-edit').click(function() {
         jQuery('#scripto-talk-page-edit').
             prop('disabled', true).
-            text('<?php echo __('Editing discussion...'); ?>');
+            text('<?php echo __('Saving discussion...'); ?>');
         jQuery.post(
             <?php echo js_escape(url('scripto/index/page-action')); ?>,
             {
@@ -52,7 +52,7 @@ jQuery(document).ready(function() {
             function(data) {
                 jQuery('#scripto-talk-page-edit').
                     prop('disabled', false).
-                    text('<?php echo __('Edit discussion'); ?>');
+                    text('<?php echo __('Save discussion'); ?>');
                 jQuery('#scripto-talk-page-html').html(data);
             }
         );
@@ -337,9 +337,8 @@ jQuery(document).ready(function() {
 
     <ul class="breadcrumb">
         <li><a href="<?php echo WEB_ROOT; ?>">Home</a><span class="divider">/</span></li>
-        <li><a href="<?php echo url('collections'); ?>"></a></li>
-        <li><a href="<?php echo url(array('controller' => 'items', 'action' => 'show', 'id' => $this->doc->getId()), 'id'); ?>"><?php echo $this->doc->getTitle(); ?></a><span class="divider">/</span></li>
-        <li><?php echo metadata($file, array('Dublin Core', 'Title')); ?></li>
+        <li><?php echo link_to_collection_for_item(); ?><span class="divider">/</span></li>
+        <li><li><a href="<?php echo url(array('controller' => 'items', 'action' => 'show', 'id' => $this->doc->getId()), 'id'); ?>"><?php echo $this->doc->getTitle(); ?></a></li>
     </ul>
     <div id="scripto-transcribe" class="scripto">
         <!-- navigation -->
@@ -359,12 +358,12 @@ jQuery(document).ready(function() {
 
         <h2><?php if ($this->doc->getTitle()): ?><?php echo $this->doc->getTitle(); ?><?php else: ?><?php echo __('Untitled Document'); ?><?php endif; ?></h2>
         <?php if ($this->scripto->canExport()): ?><div><?php echo $this->formButton('scripto-transcription-document-import', __('Import document'), array('style' => 'display:inline; float:none;')); ?></div><?php endif; ?>
-        <h3><?php echo $this->doc->getPageName(); ?></h3>
 
         <div>
             <div><strong><?php echo metadata($this->file, array('Dublin Core', 'Title')); ?></strong></div>
             <div>image <?php echo html_escape($this->paginationUrls['current_page_number']); ?> of <?php echo html_escape($this->paginationUrls['number_of_pages']); ?></div>
             <div>
+                <?php if ($this->doc->getIsReferencedBy()):echo "more information: <a href=\"" . $this->doc->getIsReferencedBy() . "\" target=\"_blank\">digital collection</a>"; else: endif; ?>
                 <?php //echo metadata($this->$file, array('Dublin Core', 'Source')); ?>
                 <?php //echo metadata($item, array('Dublin Core', 'Relation')); ?>
             </div>
@@ -398,9 +397,8 @@ jQuery(document).ready(function() {
                 <div><?php echo $this->formTextarea('scripto-transcription-page-wikitext', $this->doc->getTranscriptionPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
                 <?php endif; ?>
                 <div>
-                    <?php echo $this->formButton('scripto-transcription-page-edit', __('Edit transcription'), array('style' => 'display:inline; float:none;')); ?>
+                    <?php echo $this->formButton('scripto-transcription-page-edit', __('Save transcription'), array('class' => 'btn btn-primary')); ?>
                 </div>
-                <p><a href="http://www.mediawiki.org/wiki/Help:Formatting" target="_blank"><?php echo __('wiki formatting help'); ?></a></p>
             </div><!-- #scripto-transcription-edit -->
         <?php else: ?>
             <p><?php echo __('You don\'t have permission to transcribe this page.'); ?></p>
@@ -424,9 +422,8 @@ jQuery(document).ready(function() {
             <div id="scripto-talk-edit" style="display: none;">
                 <div><?php echo $this->formTextarea('scripto-talk-page-wikitext', $this->doc->getTalkPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
                 <div>
-                    <?php echo $this->formButton('scripto-talk-page-edit', __('Edit discussion'), array('style' => 'display:inline; float:none;')); ?>
+                    <?php echo $this->formButton('scripto-talk-page-edit', __('Save discussion'), array('style' => 'display:inline; float:none;')); ?>
                 </div>
-                <p><a href="http://www.mediawiki.org/wiki/Help:Formatting" target="_blank"><?php echo __('wiki formatting help'); ?></a></p>
             </div><!-- #scripto-talk-edit -->
             <?php else: ?>
             <p><?php echo __('You don\'t have permission to discuss this page.'); ?></p>

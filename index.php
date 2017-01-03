@@ -20,11 +20,12 @@ error_reporting(E_ALL);
     foreach ($collectionIDs as $collectionID) {
 
         $collection = get_record_by_id('collection', $collectionID);
-        $collection_link = link_to_collection($collectionTitle, array(), 'show', $collection);
+        $collectionName = metadata($collection, array('Dublin Core', 'Title'));
+        $collection_link = browsealllink_to_collection($collectionTitle, array(), 'show', $collection);
         $collection_items = get_records('Item',
             array(
                 'collection' => $collection['id'],
-                'sort_field' => 'Scripto,Weight',
+                'sort_field' => 'Dublin Core,Audience',
                 'sort_dir' => 'a',
             ),
             999);
@@ -43,7 +44,7 @@ error_reporting(E_ALL);
              ));
         }
 
-        echo '<h1 style="display: inline;">' .$collection_link. '</h1>';
+        echo '<h1 style="display: inline;">' .$collectionName. '</h1>' . $collection_link;
         echo '<hr style="visibility: hidden; margin-top: 2px; margin-bottom: 4px;" />';
         echo '<ul id="collection'.$div_counter.'" class="slider">';
 

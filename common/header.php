@@ -27,15 +27,15 @@
         'bootstrap',
         'font-awesome',
         'style',
+		'ol',
     ));
     echo head_css();
     ?>
 
     <!-- JavaScripts -->
     <?php
-    // jQuery is enabled by default in Omeka and in most themes.
-    // queue_js_url('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
-    // queue_js_url('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
+    queue_js_url('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+    queue_js_url('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js');
     queue_js_file(array(
         'bootstrap.min',
         'jquery.bxSlider.min',
@@ -46,16 +46,17 @@
 
 <?php
     echo body_tag(array('id' => @$bodyid, 'class' => @$bodyclass));
+    $base_dir = basename(getcwd());
     require_once getcwd().'/plugins/Scripto/libraries/Scripto.php';
     $scripto = ScriptoPlugin::getScripto();
 ?>
 
-    <div id="wrap" class="container">
-
-        <header id="header" role="banner">
-
-            <div id="sublinks" class="masthead clearfix">
-
+    <div id="wrap" class="container <?php echo $base_dir ?>">
+        <div id="sublinks" class="masthead clearfix">
+            <header id="header" role="banner">
+            	<div id="search-container">
+					<?php echo search_form(); ?>
+                </div><!-- end search -->
                 <ul class="nav nav-pills pull-right">
 
                     <?php if ($scripto->isLoggedIn()): ?>
@@ -77,11 +78,9 @@
                     <?php endif; ?>
                 </ul>
 
-                <a href="<?php echo WEB_ROOT; ?>"><img src="<?php echo img('sub.png'); ?>" alt="Scribe: an Omeka theme" title="Scribe: an Omeka theme" width="960" height="80" border="0"></a>
-            </div>
-
-        </header><!-- end header -->
-
+                <a href="<?php echo WEB_ROOT; ?>"><img src="<?php echo img('sub.png'); ?>" alt="Scribe: an Omeka theme" title="Scribe: an Omeka theme" width="939" height="188" border="0"></a>
+            </header><!-- end header -->
+        </div><!-- end sublinks -->
         <article id="content">
 
             <?php fire_plugin_hook('public_content_top', array('view'=>$this)); ?>

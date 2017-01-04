@@ -747,12 +747,12 @@ hr {
 	#transcribePage div.container .item-file {
 		display:inline-block;
 	}
-	#transcribePage div.container #scripto-transcription {
+	#transcribePage div.container #transcription-block {
 		width:45%;
 		display:inline-block;
 		vertical-align:top;
 	}
-	#transcribePage div.container #scripto-transcription textarea.span11 {
+	#transcribePage div.container #scripto-transcription #scripto-transcription-page-wikitext {
 		width:100%;
 	}
 }

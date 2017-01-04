@@ -362,11 +362,14 @@ jQuery(document).ready(function() {
         <div>
             <div><strong><?php echo metadata($this->file, array('Dublin Core', 'Title')); ?></strong></div>
             <div>image <?php echo html_escape($this->paginationUrls['current_page_number']); ?> of <?php echo html_escape($this->paginationUrls['number_of_pages']); ?></div>
-            <div>
-                <?php if ($this->doc->getIsReferencedBy()):echo "more information: <a href=\"" . $this->doc->getIsReferencedBy() . "\" target=\"_blank\">digital collection</a>"; else: endif; ?>
-                <?php //echo metadata($this->$file, array('Dublin Core', 'Source')); ?>
-                <?php //echo metadata($item, array('Dublin Core', 'Relation')); ?>
-            </div>
+            <div><?php if ($this->doc->getIsReferencedBy()):echo "more information: <a href=\"" . $this->doc->getIsReferencedBy() . "\" target=\"_blank\">digital collection</a>"; else: endif; ?></div>
+            <!-- pagination -->
+			<div id="pagination">
+			<?php if (isset($this->paginationUrls['previous'])): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape($this->paginationUrls['previous']); ?>'">prev</button></a><?php endif; ?>
+			<?php if (isset($this->paginationUrls['next'])): ?> | <a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape($this->paginationUrls['next']); ?>'">next</button></a><?php endif; ?>
+			<?php if (intval(html_escape($this->paginationUrls['number_of_pages'])) > 1): ?> | <a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape(url(array('controller' => 'items', 'action' => 'show', 'id' => $this->doc->getId()), 'id')); ?>'">all pages</button></a><?php endif; ?>
+			 | <a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape(url(array('item-id' => $this->doc->getId(), 'file-id' => $this->doc->getPageId(), 'namespace-index' => 0), 'scripto_history')); ?>'">history</button></a>
+			</div>
         </div>
 
         <!-- document viewer -->
@@ -437,12 +440,6 @@ jQuery(document).ready(function() {
 			</div><!-- #scripto-talk -->
 		</div>
 
-        <!-- pagination -->
-        <div class="pagination">
-        <?php if (isset($this->paginationUrls['previous'])): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape($this->paginationUrls['previous']); ?>'">prev</button></a><?php endif; ?>
-		<?php if (isset($this->paginationUrls['next'])): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape($this->paginationUrls['next']); ?>'">next</button></a><?php endif; ?>
-        <?php if (intval(html_escape($this->paginationUrls['number_of_pages'])) > 1): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape(url(array('controller' => 'items', 'action' => 'show', 'id' => $this->doc->getId()), 'id')); ?>'">all pages</button></a><?php endif; ?>
-        </div>
         <a href="#" id="scripto-page-show"></a>
 
 

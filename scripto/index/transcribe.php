@@ -373,11 +373,12 @@ jQuery(document).ready(function() {
         <?php echo file_markup($this->file, array('imageSize' => 'fullsize')); ?>
 
         <!-- pagination -->
-        <p>
-        <?php if (isset($this->paginationUrls['previous'])): ?><a href="<?php echo html_escape($this->paginationUrls['previous']); ?>">&#171; <?php echo __('previous page'); ?></a><?php else: ?>&#171; <?php echo __('previous page'); ?><?php endif; ?>
-         | <?php if (isset($this->paginationUrls['next'])): ?><a href="<?php echo html_escape($this->paginationUrls['next']); ?>"><?php echo __('next page'); ?> &#187;</a><?php else: ?><?php echo __('next page'); ?> &#187;<?php endif; ?>
-         | <a href="#" id="scripto-page-show"></a>
-        </p>
+        <div class="pagination">
+        <?php if (isset($this->paginationUrls['previous'])): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape($this->paginationUrls['previous']); ?>'">prev</button></a><?php endif; ?>
+		<?php if (isset($this->paginationUrls['next'])): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape($this->paginationUrls['next']); ?>'">next</button></a><?php endif; ?>
+        <?php if (intval(html_escape($this->paginationUrls['number_of_pages'])) > 1): ?><a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape(url(array('controller' => 'items', 'action' => 'show', 'id' => $this->doc->getId()), 'id')); ?>'">all pages</button></a><?php endif; ?>
+        </div>
+        <a href="#" id="scripto-page-show"></a>
 
         <!-- transcription -->
         <div id="scripto-transcription">

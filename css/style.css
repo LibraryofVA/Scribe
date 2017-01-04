@@ -735,6 +735,7 @@ hr {
 	
 /* Side by Side transcription layout */
 #transcribePage div.container { width:100%; }
+#transcribePage #footer div.footer { width:940px; margin-right:auto; margin-left:auto; }
 @media screen and (min-width: 600px) {
 	#transcribePage div.container #scripto-openlayers { 
 		width:50%;

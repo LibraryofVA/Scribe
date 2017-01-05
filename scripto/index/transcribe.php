@@ -14,48 +14,52 @@ jQuery(document).ready(function() {
 
     // Handle edit transcription page.
     jQuery('#scripto-transcription-page-edit').click(function() {
-        jQuery('#scripto-transcription-page-edit').
-            prop('disabled', true).
-            text('<?php echo __('Saving transcription...'); ?>');
-        jQuery.post(
-            <?php echo js_escape(url('scripto/index/page-action')); ?>,
-            {
-                page_action: 'edit',
-                page: 'transcription',
-                item_id: <?php echo js_escape($this->doc->getId()); ?>,
-                file_id: <?php echo js_escape($this->doc->getPageId()); ?>,
-                wikitext: jQuery('#scripto-transcription-page-wikitext').val()
-            },
-            function(data) {
-                jQuery('#scripto-transcription-page-edit').
-                    prop('disabled', false).
-                    text('<?php echo __('Save transcription'); ?>');
-                jQuery('#scripto-transcription-page-html').html(data);
-            }
-        );
+		jQuery.post(<?php echo js_escape(url('scripto/index/customlogin')); ?>)
+		.done(function() {
+			jQuery('#scripto-transcription-page-edit').prop('disabled', true).text('Saving transcription...');
+			jQuery.post(
+				<?php echo js_escape(url('scripto/index/page-action')); ?>, 
+				{
+					page_action: 'edit', 
+					page: 'transcription', 
+					item_id: <?php echo js_escape($this->doc->getId()); ?>, 
+					file_id: <?php echo js_escape($this->doc->getPageId()); ?>, 
+					wikitext: jQuery('#scripto-transcription-page-wikitext').val()
+				}, 
+				function(data) {
+					jQuery('#scripto-transcription-page-edit').prop('disabled', false).text('Save transcription');
+					jQuery('#scripto-transcription-page-html').html(data);
+				}
+			)
+			.done(function() {
+				jQuery.post(<?php echo js_escape(url('scripto/index/customlogout')); ?>);
+			});
+		});
     });
 
     // Handle edit talk page.
     jQuery('#scripto-talk-page-edit').click(function() {
-        jQuery('#scripto-talk-page-edit').
-            prop('disabled', true).
-            text('<?php echo __('Saving discussion...'); ?>');
-        jQuery.post(
-            <?php echo js_escape(url('scripto/index/page-action')); ?>,
-            {
-                page_action: 'edit',
-                page: 'talk',
-                item_id: <?php echo js_escape($this->doc->getId()); ?>,
-                file_id: <?php echo js_escape($this->doc->getPageId()); ?>,
-                wikitext: jQuery('#scripto-talk-page-wikitext').val()
-            },
-            function(data) {
-                jQuery('#scripto-talk-page-edit').
-                    prop('disabled', false).
-                    text('<?php echo __('Save discussion'); ?>');
-                jQuery('#scripto-talk-page-html').html(data);
-            }
-        );
+        jQuery.post(<?php echo js_escape(url('scripto/index/customlogin')); ?>)
+		.done(function() {
+			jQuery('#scripto-talk-page-edit').prop('disabled', true).text('<?php echo __('Saving discussion...'); ?>');
+			jQuery.post(
+				<?php echo js_escape(url('scripto/index/page-action')); ?>, 
+				{
+					page_action: 'edit', 
+					page: 'talk', 
+					item_id: <?php echo js_escape($this->doc->getId()); ?>, 
+					file_id: <?php echo js_escape($this->doc->getPageId()); ?>, 
+					wikitext: jQuery('#scripto-talk-page-wikitext').val()
+				}, 
+				function(data) {
+					jQuery('#scripto-talk-page-edit').prop('disabled', false).text('Save discussion');
+					jQuery('#scripto-talk-page-html').html(data);
+				}
+			)
+			.done(function() {
+				jQuery.post(<?php echo js_escape(url('scripto/index/customlogout')); ?>);
+			});
+		});
     });
 
     // Handle default transcription/talk visibility.
@@ -376,6 +380,7 @@ jQuery(document).ready(function() {
         <?php echo file_markup($this->file, array('imageSize' => 'fullsize')); ?>
 
         <div id="transcription-block" style="display: inline-block;">
+			<a href="#" id="scripto-page-show"></a>
 			<!-- transcription -->
 			<div id="scripto-transcription">
 			<?php if ($this->doc->canEditTranscriptionPage()): ?>
@@ -438,14 +443,7 @@ jQuery(document).ready(function() {
 				</div>
 				<div id="scripto-talk-page-html"><?php echo $this->talkPageHtml; ?></div>
 			</div><!-- #scripto-talk -->
-		</div>
-
-        <a href="#" id="scripto-page-show"></a>
-
-
-
-
-
+		</div><!-- #transcription-block -->
     </div><!-- #scripto-transcribe -->
 </div>
 <?php echo foot(); ?>

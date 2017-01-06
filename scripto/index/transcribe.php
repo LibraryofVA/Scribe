@@ -321,6 +321,40 @@ jQuery(document).ready(function() {
     });
 
     <?php endif; // end canExport() ?>
+	
+	// Auto save functionality
+	var myInterval = setInterval(function(){ autoSave() }, 30000);
+	
+	function autoSave() {
+		textFromDB = <?php echo js_escape($this->doc->getTranscriptionPageWikitext()); ?>;
+		if (jQuery('#scripto-transcription-page-wikitext').val() != '') {
+			if (jQuery('#scripto-transcription-page-wikitext').val() != textFromDB) {
+				jQuery.post(<?php echo js_escape(url('scripto/index/customlogin')); ?>)
+				.done(function() {
+					jQuery('#scripto-transcription-page-edit').prop('disabled', true).text('Auto saving...');
+					jQuery.post(
+						<?php echo js_escape(url('scripto/index/page-action')); ?>, 
+						{
+							page_action: 'edit', 
+							page: 'transcription', 
+							item_id: <?php echo js_escape($this->doc->getId()); ?>, 
+							file_id: <?php echo js_escape($this->doc->getPageId()); ?>, 
+							wikitext: jQuery('#scripto-transcription-page-wikitext').val()
+						}, 
+						function(data) {
+							jQuery('#scripto-transcription-page-edit').prop('disabled', false).text('Save transcription');
+							jQuery('#scripto-transcription-page-html').html(data);
+						}
+					)
+					.done(function() {
+						jQuery.post(<?php echo js_escape(url('scripto/index/customlogout')); ?>);
+					});
+				});
+				clearInterval(myInterval);
+			}
+		}
+	}
+	// end Auto save functionality
 });
 </script>
 

@@ -178,19 +178,19 @@ jQuery(document).ready(function() {
     <?php if ($this->doc->isProtectedTranscriptionPage()): ?>
     jQuery('#scripto-transcription-page-protect').
         data('protect', true).
-        text('<?php echo __('Unprotect page'); ?>').
+        text('<?php echo __('Unapprove page'); ?>').
         css('float', 'none');
     <?php else: ?>
     jQuery('#scripto-transcription-page-protect').
         data('protect', false).
-        text('<?php echo __('Protect page'); ?>').
+        text('<?php echo __('Approve page'); ?>').
         css('float', 'none');
     <?php endif; ?>
 
     // Handle un/protect transcription page.
     jQuery('#scripto-transcription-page-protect').click(function() {
         if (!jQuery(this).data('protect')) {
-            jQuery(this).prop('disabled', true).text('<?php echo __('Protecting...'); ?>');
+            jQuery(this).prop('disabled', true).text('<?php echo __('Approving...'); ?>');
             jQuery.post(
                 <?php echo js_escape(url('scripto/index/page-action')); ?>,
                 {
@@ -204,11 +204,12 @@ jQuery(document).ready(function() {
                     jQuery('#scripto-transcription-page-protect').
                         data('protect', true).
                         prop('disabled', false).
-                        text('<?php echo __('Unprotect page'); ?>');
+                        text('<?php echo __('Unapprove page'); ?>');
+					location.reload();
                 }
             );
         } else {
-            jQuery(this).prop('disabled', true).text('<?php echo __('Unprotecting page...'); ?>');
+            jQuery(this).prop('disabled', true).text('<?php echo __('Unapproving page...'); ?>');
             jQuery.post(
                 <?php echo js_escape(url('scripto/index/page-action')); ?>,
                 {
@@ -221,7 +222,8 @@ jQuery(document).ready(function() {
                     jQuery('#scripto-transcription-page-protect').
                         data('protect', false).
                         prop('disabled', false).
-                        text('<?php echo __('Protect page'); ?>');
+                        text('<?php echo __('Approve page'); ?>');
+						location.reload();
                 }
             );
         }
@@ -231,12 +233,12 @@ jQuery(document).ready(function() {
     <?php if ($this->doc->isProtectedTalkPage()): ?>
     jQuery('#scripto-talk-page-protect').
         data('protect', true).
-        text('<?php echo __('Unprotect page'); ?>').
+        text('<?php echo __('Unapprove page'); ?>').
         css('float', 'none');
     <?php else: ?>
     jQuery('#scripto-talk-page-protect').
         data('protect', false).
-        text('<?php echo __('Protect page'); ?>').
+        text('<?php echo __('Approve page'); ?>').
         css('float', 'none');
     <?php endif; ?>
 
@@ -262,7 +264,7 @@ jQuery(document).ready(function() {
                 }
             );
         } else {
-            jQuery(this).prop('disabled', true).text('<?php echo __('Unprotecting page...'); ?>');
+            jQuery(this).prop('disabled', true).text('<?php echo __('Unapproving page...'); ?>');
             jQuery.post(
                 <?php echo js_escape(url('scripto/index/page-action')); ?>,
                 {
@@ -400,46 +402,32 @@ jQuery(document).ready(function() {
         <?php echo file_markup($this->file, array('imageSize' => 'fullsize')); ?>
 
         <div id="transcription-block" style="display: inline-block;">
-			<a href="#" id="scripto-page-show"></a>
 			<!-- transcription -->
 			<div id="scripto-transcription">
-			<?php if ($this->doc->canEditTranscriptionPage()): ?>
-				<div id="scripto-transcription-edit" style="display: none;">
-				<?php if ($this->doc->isProtectedTranscriptionPage()): ?>
-					<div class="alert alert-error">
-						<strong>This transcription is complete!</strong>
-					</div><!--alert alert-error-->
-					<div id="scripto-transcription-page-html">
-						<?php echo $this->transcriptionPageHtml; ?>
-					</div>
-					<?php else: ?>
-					<strong>Enter your transcription below:</strong>
-                    <ul class="tips">
-                    	<li>Copy the text as is, including misspellings and abbreviations.</li>
-                        <li>No need to account for formatting (e.g. spacing, line breaks, alignment); the goal is to provide text for searching.</li>
-                        <li>If you can't make out a word, enter "[illegible]"; if uncertain, indicate with square brackets, e.g. "[town?]"</li>
-                        <li><a href="/transcribe/about#tips">View more transcription tips</a></li>
-                    </ul>
-					<div><?php echo $this->formTextarea('scripto-transcription-page-wikitext', $this->doc->getTranscriptionPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
-					<?php endif; ?>
-					<div>
-						<?php echo $this->formButton('scripto-transcription-page-edit', __('Save transcription'), array('class' => 'btn btn-primary')); ?>
-					</div>
-				</div><!-- #scripto-transcription-edit -->
+			  <div id="scripto-transcription-edit">
+			<?php if ($this->doc->isProtectedTranscriptionPage()): ?>
+				<div class="alert alert-error">
+					<strong>This transcription is complete!</strong>
+				</div><!--alert alert-error-->
+				<div id="scripto-transcription-page-html"><?php echo $this->transcriptionPageHtml; ?></div>
+			<?php elseif ($this->doc->canEditTranscriptionPage()): ?>
+				<strong>Enter your transcription below:</strong>
+                <ul class="tips">
+                    <li>Copy the text as is, including misspellings and abbreviations.</li>
+                    <li>No need to account for formatting (e.g. spacing, line breaks, alignment); the goal is to provide text for searching.</li>
+                    <li>If you can't make out a word, enter "[illegible]"; if uncertain, indicate with square brackets, e.g. "[town?]"</li>
+                    <li><a href="/transcribe/about#tips">View more transcription tips</a></li>
+                </ul>
+				<div><?php echo $this->formTextarea('scripto-transcription-page-wikitext', $this->doc->getTranscriptionPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
+				<?php echo $this->formButton('scripto-transcription-page-edit', __('Save transcription'), array('class' => 'btn btn-primary')); ?>
 			<?php else: ?>
 				<p><?php echo __('You don\'t have permission to transcribe this page.'); ?></p>
-			<?php endif; ?>
-
-				<h2><?php echo __('Current Page Transcription'); ?>
-				<?php if ($this->doc->canEditTranscriptionPage()): ?> [<a href="#" id="scripto-transcription-edit-show"><?php echo __('edit'); ?></a>]<?php endif; ?>
-				<?php if ($this->scripto->canProtect()): ?> [<a href="<?php echo html_escape($this->doc->getTranscriptionPageMediawikiUrl()); ?>"><?php echo __('wiki'); ?></a>]<?php endif; ?>
-				[<a href="<?php echo html_escape(url(array('item-id' => $this->doc->getId(), 'file-id' => $this->doc->getPageId(), 'namespace-index' => 0), 'scripto_history')); ?>"><?php echo __('history'); ?></a>]</h2>
-				<div>
-					<?php if ($this->scripto->isLoggedIn()): ?><?php echo $this->formButton('scripto-page-watch'); ?> <?php endif; ?>
-					<?php if ($this->scripto->canProtect()): ?><?php echo $this->formButton('scripto-transcription-page-protect'); ?> <?php endif; ?>
-					<?php if ($this->scripto->canExport()): ?><?php echo $this->formButton('scripto-transcription-page-import', __('Import page'), array('style' => 'display:inline; float:none;')); ?><?php endif; ?>
-				</div>
 				<div id="scripto-transcription-page-html"><?php echo $this->transcriptionPageHtml; ?></div>
+			<?php endif; ?>
+			  <?php if ($this->scripto->isLoggedIn()): ?><?php echo $this->formButton('scripto-page-watch', __('Watch Page'), array('class' => 'btn btn-primary')); ?> <?php endif; ?>
+			  <?php if ($this->scripto->canProtect()): ?><?php echo $this->formButton('scripto-transcription-page-protect', __('Approve Page'), array('class' => 'btn btn-primary')); ?> <?php endif; ?>
+			  <?php if ($this->scripto->canExport()): ?><?php echo $this->formButton('scripto-transcription-page-import', __('Import page'), array('class' => 'btn btn-primary')); ?><?php endif; ?>
+			  </div><!-- #scripto-transcription-edit -->
 			</div><!-- #scripto-transcription -->
 
 			<!-- discussion -->

@@ -78,7 +78,7 @@
                     <?php endif; ?>
                 </ul>
 
-                <a href="<?php echo WEB_ROOT; ?>"><img src="<?php echo img('sub.png'); ?>" alt="Scribe: an Omeka theme" title="Scribe: an Omeka theme" width="939" height="188" border="0"></a>
+                <a href="<?php echo WEB_ROOT; ?>"><img src="<?php echo img('sub.png'); ?>" alt="Making History: Transcribe" title="Scribe: an Omeka theme" width="939" height="188" border="0"></a>
             </header><!-- end header -->
         </div><!-- end sublinks -->
         <article id="content">

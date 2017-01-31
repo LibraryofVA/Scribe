@@ -774,3 +774,8 @@ hr {
 #socialbookmarking .social-img {
 	padding-right:0.5em;
 	}
+
+/* Homepage adjustment to fit jquery.bxSlider */
+body#home article#content {
+	padding: 10px 0;
+}

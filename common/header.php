@@ -81,6 +81,7 @@
                 <a href="<?php echo WEB_ROOT; ?>"><img src="<?php echo img('sub.png'); ?>" alt="Making History: Transcribe" title="Scribe: an Omeka theme" width="939" height="188" border="0"></a>
             </header><!-- end header -->
         </div><!-- end sublinks -->
+        <hr>
         <article id="content">
 
             <?php fire_plugin_hook('public_content_top', array('view'=>$this)); ?>

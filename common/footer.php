@@ -45,7 +45,7 @@
 				  }
 				  echo countFinished();
 				  ?> pages transcribed</li>
-                  <li><a href="/transcribe/code">Get the code</a></li>
+                  <li><a href="https://github.com/LibraryofVA/MakingHistory-transcribe-2.0" target="_blank">Get the code</a></li>
                 </ul>
               </div>
               <div class="span3-linda bar-linda connect">

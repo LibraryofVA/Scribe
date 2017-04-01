@@ -21,7 +21,7 @@ error_reporting(E_ALL);
 
         $collection = get_record_by_id('collection', $collectionID);
         $collectionName = metadata($collection, array('Dublin Core', 'Title'));
-        $collection_link = browsealllink_to_collection($collectionTitle, array(), 'show', $collection);
+        $collection_link = link_to_collection('browse all', array(), 'show', $collection);
         $collection_items = get_records('Item',
             array(
                 'collection' => $collection['id'],
@@ -44,7 +44,7 @@ error_reporting(E_ALL);
              ));
         }
 
-        echo '<h1 style="display: inline;">' .$collectionName. '</h1>' . $collection_link;
+        echo '<h1 style="display: inline;">' .$collectionName. '</h1> (' . $collection_link ')';
         echo '<hr style="visibility: hidden; margin-top: 2px; margin-bottom: 4px;" />';
         echo '<ul id="collection'.$div_counter.'" class="slider">';
 

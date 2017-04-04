@@ -44,7 +44,7 @@ error_reporting(E_ALL);
              ));
         }
 
-        echo '<h1 style="display: inline;">' .$collectionName. '</h1> (' . $collection_link ')';
+        echo '<h1 style="display: inline;">' .$collectionName. '</h1> (' . $collection_link . ')';
         echo '<hr style="visibility: hidden; margin-top: 2px; margin-bottom: 4px;" />';
         echo '<ul id="collection'.$div_counter.'" class="slider">';
 

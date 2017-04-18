@@ -37,7 +37,9 @@
 						$total = (int)$count;
 					}
 					mysql_close($con);
-					//account for items deleted from Omeka
+					//once collections are fully transcribed we export the transcriptions and delete the items
+					//the line below adds the total 'Completed' found currently in the database,
+					//and items completed in the past that have since been deleted, currently 785
 					$total_int = intval($total) + 785;
 					//format and string out
 					$total_str = number_format(strval($total_int));

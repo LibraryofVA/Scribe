@@ -196,9 +196,6 @@ jQuery(document).ready(function() {
 
 <?php $base_Dir = basename(getcwd()); ?>
 
-<?php if (!is_admin_theme()): ?>
-<h1><?php echo $head['title']; ?></h1>
-<?php endif; ?>
 <div id="primary">
 <?php echo flash(); ?>
 
@@ -223,6 +220,7 @@ jQuery(document).ready(function() {
 			<?php if (intval(html_escape($this->paginationUrls['number_of_pages'])) > 1): ?> | <a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape(url(array('controller' => 'items', 'action' => 'show', 'id' => $this->doc->getId()), 'id')); ?>'">all pages</button></a><?php endif; ?>
 			 | <a><button type="submit" class="btn btn-mini nav-btn" onClick="parent.location='<?php echo html_escape(url(array('item-id' => $this->doc->getId(), 'file-id' => $this->doc->getPageId(), 'namespace-index' => 0), 'scripto_history')); ?>'">history</button></a>
 			</div>
+       		<p>Zoom in to read each word clearly.<br />Some images may have writing in several directions. To rotate an image, hold down shift-Alt and use your mouse to spin the image so it is readable.</p>
         </div>
 
         <!-- document viewer -->
@@ -238,16 +236,28 @@ jQuery(document).ready(function() {
 				</div><!--alert alert-error-->
 				<div id="scripto-transcription-page-html"><?php echo $this->transcriptionPageHtml; ?></div>
 			<?php elseif ($this->doc->canEditTranscriptionPage()): ?>
-				<strong>Enter your transcription below:</strong>
-                <ul class="tips">
-                    <li>Copy the text as is, including misspellings and abbreviations.</li>
-                    <li>No need to account for formatting (e.g. spacing, line breaks, alignment); the goal is to provide text for searching.</li>
-                    <li>If you can't make out a word, enter "[illegible]"; if uncertain, indicate with square brackets, e.g. "[town?]"</li>
-                    <li><a href="/transcribe/about#tips">View more transcription tips</a></li>
-                </ul>
-				<div><?php echo $this->formTextarea('scripto-transcription-page-wikitext', $this->doc->getTranscriptionPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
-				  <div>Want more space to type? See how to <a href="https://www.youtube.com/watch?v=pdp9jJ1uaGY" target="_blank">expand your display</a>!</div>
-				<?php echo $this->formButton('scripto-transcription-page-edit', __('Save transcription'), array('class' => 'btn btn-primary')); ?> 
+                <?php if (metadata($this->item, array('Dublin Core', 'Type')) == "photoTagging") { ?>
+					<strong>Enter your descriptive words below:</strong>
+					<ul class="tips">
+						<li>Closely examine this photograph and add as many descriptive words as you can think of.</li>
+                        <li>Separate each word with a comma.</li>
+                        <li>We appreciate your help in making our online photographs more discoverable!</li>
+					</ul>
+					<div><?php echo $this->formTextarea('scripto-transcription-page-wikitext', $this->doc->getTranscriptionPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
+					  <div>Want more space to type? See how to <a href="https://www.youtube.com/watch?v=pdp9jJ1uaGY" target="_blank">expand your display</a>!</div>
+					<?php echo $this->formButton('scripto-transcription-page-edit', __('Save tags'), array('class' => 'btn btn-primary')); ?> 
+				<?php } else { ?>
+					<div><?php echo $this->formTextarea('scripto-transcription-page-wikitext', $this->doc->getTranscriptionPageWikitext(), array('cols' => '76', 'rows' => '16')); ?></div>
+					<strong>Enter your transcription above:</strong>
+					<ul class="tips">
+						<li>Copy the text as is, including misspellings and abbreviations.</li>
+						<li>No need to account for formatting (e.g. spacing, line breaks, alignment); the goal is to provide text for searching.</li>
+						<li>If you can't make out a word, enter "[illegible]"; if uncertain, indicate with square brackets, e.g. "[town?]"</li>
+						<li><a href="/transcribe/about#tips">View more transcription tips</a></li>
+						<li>Want more space to type? See how to <a href="https://www.youtube.com/watch?v=pdp9jJ1uaGY" target="_blank">expand your display</a>!</li>
+					</ul>
+					<?php echo $this->formButton('scripto-transcription-page-edit', __('Save transcription'), array('class' => 'btn btn-primary')); ?> 
+				<?php } ?>
 			<?php else: ?>
 				<p><?php echo __('You don\'t have permission to transcribe this page.'); ?></p>
 				<div id="scripto-transcription-page-html"><?php echo $this->transcriptionPageHtml; ?></div>
